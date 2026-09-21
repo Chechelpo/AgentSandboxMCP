@@ -1,0 +1,15 @@
+.git
+.gitattributes
+.gitignore
+.idea
+.run
+.env
+.env.*
+target
+*.iml
+*.log
+Dockerfile*
+compose*.yml
+compose*.yaml
+README.md
+HELP.md

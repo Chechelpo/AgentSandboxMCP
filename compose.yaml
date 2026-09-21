@@ -1,0 +1,23 @@
+services:
+  agent-sandbox-mcp:
+    build:
+      context: .
+    image: agent-sandbox-mcp:local
+    init: true
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${SANDBOX_MCP_PORT:-8080}:8080"
+    environment:
+      SANDBOX_MCP_WEB_USERNAME: "${SANDBOX_MCP_WEB_USERNAME:-admin}"
+      SANDBOX_MCP_WEB_PASSWORD: "${SANDBOX_MCP_WEB_PASSWORD:?Set SANDBOX_MCP_WEB_PASSWORD in .env}"
+    volumes:
+      - sandbox-mcp-data:/root/.sandbox-mcp
+    cap_add:
+      - SYS_ADMIN
+    security_opt:
+      - apparmor=unconfined
+      - seccomp=unconfined
+      - systempaths=unconfined
+
+volumes:
+  sandbox-mcp-data:

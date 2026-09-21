@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sandbox MCP configuration</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<main class="shell">
+    <header>
+        <div>
+            <p class="eyebrow">Agent Sandbox MCP</p>
+            <h1>Configuration</h1>
+            <p class="subtitle">Manage workspace storage and the API keys allowed to use the MCP server.</p>
+        </div>
+        <span id="connection-status" class="status status-loading">Loading</span>
+    </header>
+
+    <form id="path-form">
+        <section class="panel">
+            <label for="agent-workspaces">Agent workspaces</label>
+            <p>Each authenticated MCP client gets a separate directory beneath this path.</p>
+            <input
+                    id="agent-workspaces"
+                    name="AGENT_WORKSPACES"
+                    type="text"
+                    autocomplete="off"
+                    spellcheck="false"
+                    required>
+        </section>
+
+        <section class="panel">
+            <label for="stable-workspaces">Stable workspaces</label>
+            <p>Durable, named workspaces shared by authenticated MCP clients.</p>
+            <input
+                    id="stable-workspaces"
+                    name="STABLE_WORKSPACES"
+                    type="text"
+                    autocomplete="off"
+                    spellcheck="false"
+                    required>
+        </section>
+
+        <section class="panel">
+            <label for="workspace-config">Workspace config file</label>
+            <p>Location reserved for shared workspace configuration.</p>
+            <input
+                    id="workspace-config"
+                    name="WORKSPACE_CONFIG_FILE"
+                    type="text"
+                    autocomplete="off"
+                    spellcheck="false"
+                    required>
+        </section>
+
+        <div id="message" class="message" role="status" aria-live="polite"></div>
+
+        <div class="actions">
+            <button id="reload-button" class="button button-secondary" type="button">Reload</button>
+            <button id="save-button" class="button button-primary" type="submit">Save paths</button>
+        </div>
+    </form>
+
+    <section class="panel account-panel">
+        <div class="section-heading">
+            <div>
+                <h2>WebUI login</h2>
+                <p>
+                    Signed in as <strong id="account-username">…</strong>.
+                    Login credentials are controlled by the server environment and cannot be changed here.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="panel keys-panel">
+        <div class="section-heading">
+            <div>
+                <h2>API keys</h2>
+                <p>Every MCP request must include a configured key as a bearer token.</p>
+            </div>
+        </div>
+
+        <form id="key-form" class="key-form">
+            <div>
+                <label for="key-name">User or client name</label>
+                <input
+                        id="key-name"
+                        name="name"
+                        type="text"
+                        maxlength="100"
+                        autocomplete="off"
+                        placeholder="Lumiverse"
+                        required>
+            </div>
+            <div>
+                <label for="key-secret">Custom key <span class="optional">optional</span></label>
+                <input
+                        id="key-secret"
+                        name="key"
+                        type="password"
+                        minlength="16"
+                        autocomplete="new-password"
+                        placeholder="Leave empty to generate a secure key">
+            </div>
+            <button id="create-key-button" class="button button-primary" type="submit">Create key</button>
+        </form>
+
+        <div id="created-key" class="created-key" hidden>
+            <div>
+                <strong>API key created.</strong>
+                <span>You can copy it here or from the saved key list.</span>
+            </div>
+            <div class="secret-row">
+                <code id="created-key-value"></code>
+                <button id="copy-key-button" class="button button-secondary" type="button">Copy</button>
+            </div>
+        </div>
+
+        <div id="key-message" class="message" role="status" aria-live="polite"></div>
+        <div id="key-list" class="key-list" aria-live="polite"></div>
+    </section>
+
+    <footer>
+        Paths are stored in <code>~/.sandbox-mcp/paths.json</code>. Stable workspaces default
+        to <code>~/.sandbox-mcp/stable-workspaces</code>. API keys are stored in
+        plaintext in <code>~/.sandbox-mcp/api-keys.json</code>. WebUI credentials come from
+        the server environment. Persistent locations can be overridden with application
+        properties.
+    </footer>
+</main>
+
+<script src="/app.js" defer></script>
+</body>
+</html>
